@@ -8,17 +8,15 @@ interface Props {
   question: QuestionData;
   selectFunction: Function;
 }
-
+interface State {
+  dispositionAnswer: string;
+  conviction_date: string;
+  probation_revoked_date: string;
+  missingFields: boolean;
+  invalidDate: boolean;
+}
 export function DispositionQuestion(props: Props) {
-  type StateType = {
-    dispositionAnswer: string;
-    conviction_date: string;
-    probation_revoked_date: string;
-    missingFields: boolean;
-    invalidDate: boolean;
-  };
-
-  const [questionState, setQuestionState] = useState<StateType>({
+  const [questionState, setQuestionState] = useState<State>({
     dispositionAnswer: props.question.selection,
     conviction_date: props.question.convicted_date_string,
     probation_revoked_date: props.question.probation_revoked_date_string,
@@ -29,7 +27,7 @@ export function DispositionQuestion(props: Props) {
   function handleDateFieldChange(e: React.BaseSyntheticEvent) {
     const dateFieldName = e.target.name;
     const dateFieldValue = e.target.value;
-    return setQuestionState((questionState: StateType) => {
+    return setQuestionState((questionState: State) => {
       return {
         ...questionState,
         [dateFieldName]: dateFieldValue,
@@ -41,7 +39,7 @@ export function DispositionQuestion(props: Props) {
     return () => {
       const [missingFields, invalidDate] = validateForm();
       if (missingFields || invalidDate) {
-        return setQuestionState((questionState: StateType) => {
+        return setQuestionState((questionState: State) => {
           return {
             ...questionState,
             missingFields: missingFields,
@@ -49,7 +47,7 @@ export function DispositionQuestion(props: Props) {
           };
         });
       } else {
-        setQuestionState((questionState: StateType) => {
+        setQuestionState((questionState: State) => {
           return {
             ...questionState,
             missingFields: false,
